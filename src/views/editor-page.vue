@@ -136,7 +136,7 @@
                 </div>
               </div>
 
-              <div v-else class="textarea-element">
+              <div class="textarea-element">
                 <div v-if="isDisabled(item.disabled)" v-html="item.value" />
                 <textarea-editor 
                   v-else
@@ -255,7 +255,14 @@
       }
     },
     mounted() {
-      this.createTextarea('Импортируйте имеющийся документ или начните создавать новый с добавления блоков <b>«График»</b> или <b>«Текст»</b>.');
+      const rf = new XMLHttpRequest();
+      rf.open('GET', '/preview.txt', false);
+
+      rf.onreadystatechange = () => {
+        this.onImport(rf.responseText);
+      };
+
+      rf.send(null);
     },
     methods: {
       isDisabled(disabled) {
